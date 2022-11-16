@@ -54,13 +54,23 @@ public class PlayerScript : MonoBehaviour
         thisRigidbody.AddForce(walkVector, ForceMode.Force);
     }
 
-    // Verifica se está colidindo com um objeto que possui a tag "Sensor"
+    // Verifica se está colidindo com um objetos
     void OnTriggerEnter(Collider other) {
         GameObject otherObject = other.gameObject;
+
+        // Sensor
         if(otherObject.CompareTag("Sensor")) {
             var sensorScript = otherObject.GetComponent<SensorScript>();
             var index = sensorScript.itemIndex;
             UpdateIndex(index);
+        }
+
+        // Soil
+        if(otherObject.CompareTag("Soil")){
+            var soilScript = otherObject.GetComponent<SoilScript>();
+            if(itemIndex == 3) {
+                soilScript.Water();
+            }
         }
     }
 

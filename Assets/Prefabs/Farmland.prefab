@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7226127665843393263}
   m_Layer: 0
   m_Name: Farmland
-  m_TagString: Untagged
+  m_TagString: Soil
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,5 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWet: 0
+  timeToDry: 120
   materialDry: {fileID: 2100000, guid: c270ae2b8e3a4f64e847e8695467129f, type: 2}
   materialWet: {fileID: 2100000, guid: a60300408eca06b45889f0b5102cbb62, type: 2}
