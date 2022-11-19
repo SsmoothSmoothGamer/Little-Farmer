@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
 
     public List<string> items;
     public List<GameObject> itemObjects;
+
+    public List<GameObject> beetPrefabs;
+    public List<GameObject> pumpkinPrefabs; 
+
     void Awake(){
         Instance = this;
     }

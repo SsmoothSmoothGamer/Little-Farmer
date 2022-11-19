@@ -9,8 +9,16 @@ public class SoilScript : MonoBehaviour
     public Material materialDry;
     public Material materialWet;
 
+    public int seedIndex;
+    private int oldCropStage;
+    public int cropStage;
+    public GameObject cropObject;
+
     private MeshRenderer thisMeshRenderer;
     private float dryCooldown = 0;
+    private float growInteraval = 1;
+    private float growCooldown = 0;
+    private float growChance = 0.025f;
 
     void Awake() { 
         thisMeshRenderer = GetComponent<MeshRenderer>();
@@ -35,10 +43,64 @@ public class SoilScript : MonoBehaviour
                 isWet = false;
             } 
         }
+
+        // Update crops
+        if(oldCropStage != cropStage) {
+
+            // Remove crops
+            if(cropObject != null){
+                Destroy(cropObject);
+            }
+
+            // Plant crops
+            if(cropStage > 0) {
+                var gm = GameManager.Instance;
+                var prefabs = seedIndex == 1 ? gm.beetPrefabs : gm.pumpkinPrefabs;
+                var cropPrefab = prefabs[cropStage - 1];  
+
+                var position = transform.position;
+                var rotation = cropPrefab.transform.rotation * Quaternion.Euler(Vector3.up * Random.Range(0, 360));
+                cropObject = Instantiate(cropPrefab, position, rotation);
+            }
+        }
+        oldCropStage = cropStage;
+
+        //Grow crops
+        if(!IsEmpty() && !IsFinish()) {
+            if((growCooldown -= Time.deltaTime) <= 0) {
+                growCooldown = growInteraval;
+                var realChance = growChance;
+                if(isWet){
+                    realChance *= 2f;
+                }
+                if(Random.Range(0f, 1f) < growChance){
+                    cropStage++;
+                }
+            }
+        }
     }
 
     public void Water() {
         isWet = true;
         dryCooldown = timeToDry;
     }
+
+    public bool IsEmpty(){
+        return cropStage == 0;
+    }
+
+    public bool IsFinish(){
+        return cropStage == 5;
+    }
+
+    public void Seed(int index) {
+        if (!IsEmpty()) return;
+
+
+        // Set vars
+        seedIndex = index;
+        cropStage = 1;
+        
+    }
+
 }

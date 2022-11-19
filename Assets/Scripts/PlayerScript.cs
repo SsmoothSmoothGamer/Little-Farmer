@@ -68,8 +68,17 @@ public class PlayerScript : MonoBehaviour
         // Soil
         if(otherObject.CompareTag("Soil")){
             var soilScript = otherObject.GetComponent<SoilScript>();
+
+            // With watering can
             if(itemIndex == 3) {
                 soilScript.Water();
+            }
+
+            // With seeds
+            if(itemIndex == 1 || itemIndex == 2) {
+                if(soilScript.IsEmpty()) {
+                    soilScript.Seed(itemIndex);
+                }
             }
         }
     }
