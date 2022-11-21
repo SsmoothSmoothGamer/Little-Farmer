@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public int coins;
+    public int coinsPerFruit = 5;
+
+    public Transform depositBoxTransform;
+
     public List<string> items;
     public List<GameObject> itemObjects;
 

@@ -80,6 +80,51 @@ public class PlayerScript : MonoBehaviour
                     soilScript.Seed(itemIndex);
                 }
             }
+
+            // With air
+            if(itemIndex == 0) {
+                if(soilScript.IsFinish()) {
+                    var seedIndex = soilScript.seedIndex;
+                    soilScript.RemoveCrop();
+                    UpdateIndex(seedIndex + 3);
+
+                }
+            }
+        }
+    }
+
+    void OnCollisionEnter(Collision other) {
+        var otherObject = other.gameObject;
+
+        // Sell Box
+        if(otherObject.CompareTag("SellBox")) {
+            if(itemIndex == 4 || itemIndex == 5) {
+
+                var gm = GameManager.Instance;
+
+                // Teleport fruit
+                var fruitObject = holdingObject;
+                holdingObject = null;
+                var offset = new Vector3(
+                    Random.Range(-1f,1f), 
+                    Random.Range(-1f,1f), 
+                    Random.Range(-1f,1f)
+                );
+                var destination = gm.depositBoxTransform.position + offset;
+                fruitObject.transform.position = destination;
+
+                // Enable gravity
+                var fruitRigidbody = fruitObject.GetComponent<Rigidbody>();
+                if(fruitRigidbody != null) {
+                    fruitRigidbody.useGravity = true;
+                }
+                // reset index
+                UpdateIndex(0);
+
+                // Give money
+                gm.coins += gm.coinsPerFruit;
+                Debug.Log("Player coins: " + gm.coins);
+            }
         }
     }
 

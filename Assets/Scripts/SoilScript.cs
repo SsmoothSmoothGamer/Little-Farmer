@@ -103,4 +103,8 @@ public class SoilScript : MonoBehaviour
         
     }
 
+    public void RemoveCrop() {
+        cropStage = 0;
+    }
+
 }
